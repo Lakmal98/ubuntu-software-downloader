@@ -1,3 +1,10 @@
+# Dependencies
+# - curl
+# - wget
+# - awk
+# - grep
+# - wc
+
 # Google chrome
 if [ $(google-chrome --version | grep Google\ Chrome | wc -l) -eq 0 ]; then
     echo "Google Chrome is not installed"
