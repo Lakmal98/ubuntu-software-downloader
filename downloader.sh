@@ -6,7 +6,7 @@
 # - wc
 
 # Google chrome
-if [ $(google-chrome --version | grep Google\ Chrome | wc -l) -eq 0 ]; then
+if [ $(google-chrome --version 2>/dev/null | grep Google\ Chrome | wc -l) -eq 0 ]; then
     echo "Google Chrome is not installed"
     echo "Installing Google Chrome"
     wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
