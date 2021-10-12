@@ -31,7 +31,7 @@ wcExist=$(wc --version 2>/dev/null | head -1)
 if [ -z "$wcExist" ]; then
     echo -e "${RED}wc not installed${NC}"
     echo "Installing wc..."
-    sudo apt-get install wc
+    sudo apt-get -y install wc
     echo -e "${BLUE}$(wc --version | head -1) installed${NC}"
     dependencyCount=$((dependencyCount + 1))
 else
@@ -44,7 +44,7 @@ totalDependencies=$((totalDependencies + 1))
 if [ $(greps --version 2>/dev/null | head -1 | wc -l) -eq 0 ]; then
     echo -e "${RED}grep is not installed.${NC}"
     echo "Installing grep..."
-    sudo apt-get install grep
+    sudo apt-get -y install grep
     echo -e "${BLUE}$(grep --version 2>/dev/null | head -1) installed.${NC}"
     dependencyCount=$((dependencyCount + 1))
 else
@@ -77,7 +77,7 @@ wgetExist=$(wget --version | head -1 | awk '{print $3}' 2>/dev/null | wc -l)
 if [ $wgetExist -eq 0 ]; then
     echo "wget not installed"
     echo "Installing wget"
-    sudo apt-get install wget
+    sudo apt-get -y install wget
     echo -e "${BLUE}wget version $(wget --version | head -1 | awk '{print $3}') installed${NC}"
     dependencyCount=$((dependencyCount + 1))
 else
@@ -93,7 +93,7 @@ curlExist=$(curl --version | head -1 | awk '{print $2}' 2>/dev/null | wc -l)
 if [ $curlExist -eq 0 ]; then
     echo "curl not installed"
     echo "Installing curl"
-    sudo apt-get install curl
+    sudo apt-get -y install curl
     echo -e "${BLUE}curl version $(curl --version | head -1 | awk '{print $2}') installed${NC}"
     dependencyCount=$((dependencyCount + 1))
 else
