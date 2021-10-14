@@ -41,7 +41,7 @@ fi
 
 # grep
 totalDependencies=$((totalDependencies + 1))
-if [ $(greps --version 2>/dev/null | head -1 | wc -l) -eq 0 ]; then
+if [ $(grep --version 2>/dev/null | head -1 | wc -l) -eq 0 ]; then
     echo -e "${RED}grep is not installed.${NC}"
     echo "Installing grep..."
     sudo apt-get -y install grep
@@ -116,6 +116,11 @@ fi
 
 echo -e "${YELLOW}Start downloading software...\n${NC}"
 
+# Switch to downloader directory
+cd ~/Downloads
+mkdir -p downloader
+cd downloader
+
 # Google chrome
 if [ $(google-chrome --version 2>/dev/null | grep Google\ Chrome | wc -l) -eq 0 ]; then
     echo "Google Chrome is not installed"
@@ -172,6 +177,21 @@ if [ $(vlc --version 2>/dev/null | wc -l) -eq 0 ]; then
     sudo tar -xvf vlc-$latestVersion.tar.xz -C /opt
     # remove vlc.tar.xz
     rm vlc-$latestVersion.tar.xz
+
+    # create icon for vlc
+    sudo touch /usr/share/applications/vlc.desktop
+    sudo chmod +x /usr/share/applications/vlc.desktop
+    sudo echo "[Desktop Entry]" >>/usr/share/applications/vlc.desktop
+    sudo echo "Name=VLC media player" >>/usr/share/applications/vlc.desktop
+    sudo echo "GenericName=Multimedia Player" >>/usr/share/applications/vlc.desktop
+    sudo echo "Exec=/opt/vlc/vlc" >>/usr/share/applications/vlc.desktop
+    sudo echo "Icon=/opt/vlc/share/vlc/icons/128x128/vlc-logo.png" >>/usr/share/applications/vlc.desktop
+    sudo echo "Terminal=false" >>/usr/share/applications/vlc.desktop
+    sudo echo "Type=Application" >>/usr/share/applications/vlc.desktop
+    sudo echo "Categories=Multimedia;" >>/usr/share/applications/vlc.desktop
+    sudo echo "StartupNotify=true" >>/usr/share/applications/vlc.desktop
+    sudo echo "StartupWMClass=vlc" >>/usr/share/applications/vlc.desktop
+
     vlcVersion=$(vlc --version 2>/dev/null | head -1 | awk '{print $3}')
     echo -e "${BLUE}VLC Player version $vlcVersion installed${NC}"
 else
@@ -192,3 +212,76 @@ else
     zoomVersion=$(dpkg -s zoom | grep -i version | awk '{print $2}' | awk '{print $3}')
     echo -e "${GREEN}Zoom version $zoomVersion already installed${NC}"
 fi
+
+# Postman
+# Check Postman exist withing the system
+
+if [ -f "/opt/postman/Postman" ]; then
+    echo "Postman is not installed"
+    echo "Installing Postman ..."
+    wget https://dl.pstmn.io/download/latest/linux64 -O postman.tar.gz
+    sudo tar -xzf postman.tar.gz -C /opt
+    rm postman.tar.gz
+
+    # create icon for postman
+    sudo touch /usr/share/applications/postman.desktop
+    sudo chmod +x /usr/share/applications/postman.desktop
+    sudo echo "[Desktop Entry]" >>/usr/share/applications/postman.desktop
+    sudo echo "Name=Postman" >>/usr/share/applications/postman.desktop
+    sudo echo "GenericName=API Client" >>/usr/share/applications/postman.desktop
+    sudo echo "Exec=/opt/Postman/Postman" >>/usr/share/applications/postman.desktop
+    sudo echo "Icon=/opt/Postman/app/resources/app/assets/icon.png" >>/usr/share/applications/postman.desktop
+    sudo echo "Terminal=false" >>/usr/share/applications/postman.desktop
+    sudo echo "Type=Application" >>/usr/share/applications/postman.desktop
+    sudo echo "Categories=Development;" >>/usr/share/applications/postman.desktop
+    sudo echo "StartupNotify=true" >>/usr/share/applications/postman.desktop
+    sudo echo "StartupWMClass=Postman" >>/usr/share/applications/postman.desktop
+
+    echo -e "${BLUE}Postman installed${NC}"
+else
+    echo -e "${GREEN}Postman already installed${NC}"
+fi
+
+# Clear Terminal
+clear
+
+# Installation Complete
+echo -e "${GREEN}Installation Complete${NC}"
+
+# Empty trash
+echo -e "${BLUE}Emptying trash${NC}"
+sudo rm -rf ~/.local/share/Trash/*
+
+# clear all Downloads
+echo "Cleaning all Downloads ..."
+rm -rf ~/Downloads/downloader/*
+
+# remove downloader directory
+echo "Removing downloader directory ..."
+rm -rf ~/Downloads/downloader
+
+# All set up message
+echo -e "${GREEN}All set up!${NC}"
+
+# # force stop apt-get
+# echo "Force stop apt-get ..."
+# sudo killall -9 apt-get
+
+# # reconfigure apt-get
+# dpkg --configure -a
+
+# # apt-get update
+# echo "apt-get update ..."
+# sudo apt-get update
+
+# # apt upgrade
+# echo "Upgrading apt ..."
+# sudo apt-get -y upgrade
+
+# # apt autoremove
+# echo "Auto removing apt ..."
+# sudo apt-get autoremove 2>/dev/null
+
+# # apt autoclean
+# echo "Auto cleaning apt ..."
+# sudo apt-get autoclean 2>/dev/null
