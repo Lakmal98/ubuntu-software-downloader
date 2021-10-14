@@ -178,3 +178,17 @@ else
     vlcVersion=$(vlc --version 2>/dev/null | head -1 | awk '{print $3}')
     echo -e "${GREEN}VLC Player version $vlcVersion already installed${NC}"
 fi
+
+# Zoom
+if [ $(dpkg -s zoom | grep -i version | awk '{print $2}' 2>/dev/null | wc -l) -eq 0 ]; then
+    echo "Zoom is not installed"
+    echo "Installing Zoom ..."
+    wget https://zoom.us/client/latest/zoom_amd64.deb
+    sudo dpkg -i zoom_amd64.deb
+    rm zoom_amd64.deb
+    zoomVersion=$(dpkg -s zoom | grep -i version | awk '{print $2}' | awk '{print $3}')
+    echo -e "${BLUE}Zoom version $zoomVersion installed${NC}"
+else
+    zoomVersion=$(dpkg -s zoom | grep -i version | awk '{print $2}' | awk '{print $3}')
+    echo -e "${GREEN}Zoom version $zoomVersion already installed${NC}"
+fi
