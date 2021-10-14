@@ -149,7 +149,6 @@ fi
 if [ $(code --version 2>/dev/null | wc -l) -eq 0 ]; then
     echo "VSCode is not installed"
     echo "Installing VSCode ..."
-    version=$(curl --location --request GET 'https://code.visualstudio.com/' | tail -3 | grep -oP '(?<=\/">).*(?=\/<\/a>)')
     # set wget downloding file name
     wget -O vscode.deb https://go.microsoft.com/fwlink/?LinkID=760868
     sudo dpkg -i vscode.deb
@@ -159,4 +158,23 @@ if [ $(code --version 2>/dev/null | wc -l) -eq 0 ]; then
 else
     codeVersion=$(code --version | head -1)
     echo -e "${GREEN}VSCode version $codeVersion already installed${NC}"
+fi
+
+# VLC Player
+if [ $(vlc --version 2>/dev/null | wc -l) -eq 0 ]; then
+    echo "VLC Player is not installed"
+    echo "Installing VLC Player ..."
+    # get latest version
+    latestVersion=$(curl GET https://download.videolan.org/pub/videolan/vlc/last/ | grep -oP '(?<=\>vlc-).*(?=.tar.xz)' | head -1)
+    # download vlc for ubuntu deb
+    wget https://download.videolan.org/pub/videolan/vlc/last/vlc-$latestVersion.tar.xz
+    # unzip vlc to /opt/vlc
+    sudo tar -xvf vlc-$latestVersion.tar.xz -C /opt
+    # remove vlc.tar.xz
+    rm vlc-$latestVersion.tar.xz
+    vlcVersion=$(vlc --version 2>/dev/null | head -1 | awk '{print $3}')
+    echo -e "${BLUE}VLC Player version $vlcVersion installed${NC}"
+else
+    vlcVersion=$(vlc --version 2>/dev/null | head -1 | awk '{print $3}')
+    echo -e "${GREEN}VLC Player version $vlcVersion already installed${NC}"
 fi
