@@ -242,6 +242,22 @@ else
     echo -e "${GREEN}Postman already installed${NC}"
 fi
 
+# Slack
+if [ $(slack --version 2>/dev/null | wc -l) -eq 0 ]; then
+    echo "Slack is not installed"
+    echo "Installing Slack ..."
+    # get lateset version number for slack
+
+    # wget https://downloads.slack-edge.com/linux_releases/slack-desktop-4.2.0-amd64.deb
+    # sudo dpkg -i slack-desktop-4.2.0-amd64.deb
+    # rm slack-desktop-4.2.0-amd64.deb
+    # slackVersion=$(dpkg -s slack | grep -i version | awk '{print $2}' | awk '{print $3}')
+    # echo -e "${BLUE}Slack version $slackVersion installed${NC}"
+else
+    slackVersion=$(dpkg -s slack | grep -i version | awk '{print $2}' | awk '{print $3}')
+    echo -e "${GREEN}Slack version $slackVersion already installed${NC}"
+fi
+
 # Clear Terminal
 clear
 
