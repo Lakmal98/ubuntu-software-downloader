@@ -144,3 +144,19 @@ else
     operaVersion=$(opera --version)
     echo -e "${GREEN}Opera version $operaVersion already installed${NC}"
 fi
+
+# VSCode
+if [ $(code --version 2>/dev/null | wc -l) -eq 0 ]; then
+    echo "VSCode is not installed"
+    echo "Installing VSCode ..."
+    version=$(curl --location --request GET 'https://code.visualstudio.com/' | tail -3 | grep -oP '(?<=\/">).*(?=\/<\/a>)')
+    # set wget downloding file name
+    wget -O vscode.deb https://go.microsoft.com/fwlink/?LinkID=760868
+    sudo dpkg -i vscode.deb
+    rm vscode.deb
+    codeVersion=$(code --version | head -1)
+    echo -e "${BLUE}VSCode version $codeVersion installed${NC}"
+else
+    codeVersion=$(code --version | head -1)
+    echo -e "${GREEN}VSCode version $codeVersion already installed${NC}"
+fi
