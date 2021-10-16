@@ -260,14 +260,16 @@ if [ $(slack --version 2>/dev/null | wc -l) -eq 0 ]; then
     echo "Installing Slack ..."
     echo "Downloading Slack with snap ..."
     sudo snap install slack --classic
-    slackVersion=$(dpkg -s slack | grep -i version | awk '{print $2}' | awk '{print $3}')
+    slackVersion=$(slack --version)
     echo -e "${BLUE}Slack version $slackVersion installed${NC}"
 else
-    slackVersion=$(dpkg -s slack | grep -i version | awk '{print $2}' | awk '{print $3}')
+    slackVersion=$(slack --version)
     echo -e "${GREEN}Slack version $slackVersion already installed${NC}"
 fi
-
 # nvm
+export NVM_DIR=$HOME/.nvm
+source $NVM_DIR/nvm.sh
+
 if [ $(nvm --version 2>/dev/null | wc -l) -eq 0 ]; then
     echo "NVM is not installed"
     echo "Installing NVM ..."
