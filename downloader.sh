@@ -267,6 +267,49 @@ else
     echo -e "${GREEN}Slack version $slackVersion already installed${NC}"
 fi
 
+# nvm
+if [ $(nvm --version 2>/dev/null | wc -l) -eq 0 ]; then
+    echo "NVM is not installed"
+    echo "Installing NVM ..."
+    curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
+    # load environment variables
+    source ~/.profile
+    nvmVersion=$(nvm --version)
+    echo -e "${BLUE}NVM version $nvmVersion installed${NC}"
+else
+    nvmVersion=$(nvm --version)
+    echo -e "${GREEN}NVM version $nvmVersion already installed${NC}"
+fi
+
+# Node JS
+nvm install stable
+nvm install 10.24.*
+nvm use stable
+
+# Git
+if [ $(git --version 2>/dev/null | wc -l) -eq 0 ]; then
+    echo "Git is not installed"
+    echo "Installing Git ..."
+    sudo apt-get install git
+    gitVersion=$(git --version | head -1 | awk '{print $3}')
+    echo -e "${BLUE}Git version $gitVersion installed${NC}"
+else
+    gitVersion=$(git --version | head -1 | awk '{print $3}')
+    echo -e "${GREEN}Git version $gitVersion already installed${NC}"
+fi
+
+# Java Runtime environment
+if [ $(java --version 2>/dev/null | wc -l) -eq 0 ]; then
+    echo "Java Runtime Environment is not installed"
+    echo "Installing Java Runtime Environment ..."
+    sudo apt-get install default-jre
+    javaVersion=$(java --version | head -1 | awk '{print $2}')
+    echo -e "${BLUE}Java Runtime Environment version $javaVersion installed${NC}"
+else
+    javaVersion=$(java --version | head -1 | awk '{print $2}')
+    echo -e "${GREEN}Java Runtime Environment version $javaVersion already installed${NC}"
+fi
+
 # Clear Terminal
 clear
 
