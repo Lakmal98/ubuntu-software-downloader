@@ -242,17 +242,26 @@ else
     echo -e "${GREEN}Postman already installed${NC}"
 fi
 
+# snap store and snapd
+if [ $(snap list 2>/dev/null | grep -i snapd | wc -l) -eq 0 ]; then
+    echo "Snapd is not installed"
+    echo "Installing Snapd ..."
+    sudo apt install snapd
+    snapVersion=$(snap --version | head -1 | awk '{print $2}')
+    echo -e "${BLUE}Snapd version $snapVersion installed${NC}"
+else
+    snapVersion=$(snap --version | head -1 | awk '{print $2}')
+    echo -e "${GREEN}Snapd version $snapVersion already installed${NC}"
+fi
+
 # Slack
 if [ $(slack --version 2>/dev/null | wc -l) -eq 0 ]; then
     echo "Slack is not installed"
     echo "Installing Slack ..."
-    # get lateset version number for slack
-
-    # wget https://downloads.slack-edge.com/linux_releases/slack-desktop-4.2.0-amd64.deb
-    # sudo dpkg -i slack-desktop-4.2.0-amd64.deb
-    # rm slack-desktop-4.2.0-amd64.deb
-    # slackVersion=$(dpkg -s slack | grep -i version | awk '{print $2}' | awk '{print $3}')
-    # echo -e "${BLUE}Slack version $slackVersion installed${NC}"
+    echo "Downloading Slack with snap ..."
+    sudo snap install slack --classic
+    slackVersion=$(dpkg -s slack | grep -i version | awk '{print $2}' | awk '{print $3}')
+    echo -e "${BLUE}Slack version $slackVersion installed${NC}"
 else
     slackVersion=$(dpkg -s slack | grep -i version | awk '{print $2}' | awk '{print $3}')
     echo -e "${GREEN}Slack version $slackVersion already installed${NC}"
