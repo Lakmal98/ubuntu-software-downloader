@@ -315,6 +315,18 @@ else
     echo -e "${GREEN}Java Runtime Environment version $javaVersion already installed${NC}"
 fi
 
+# Flameshot
+if [ $(flameshot --version 2>/dev/null | wc -l) -eq 0 ]; then
+    echo "Flameshot is not installed"
+    echo "Installing Flameshot ..."
+    sudo apt-get install flameshot -y
+    flameshotVersion=$(flameshot --version)
+    echo -e "${BLUE}Flameshot version $flameshotVersion installed${NC}"
+else
+    flameshotVersion=$(flameshot --version)
+    echo -e "${GREEN}Flameshot version $flameshotVersion already installed${NC}"
+fi
+
 # Clear Terminal
 clear
 
