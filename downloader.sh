@@ -121,6 +121,7 @@ cd ~/Downloads
 mkdir -p downloader
 cd downloader
 
+
 # Google chrome
 if [ $(google-chrome --version 2>/dev/null | grep Google\ Chrome | wc -l) -eq 0 ]; then
     echo "Google Chrome is not installed"
@@ -266,6 +267,7 @@ else
     slackVersion=$(slack --version)
     echo -e "${GREEN}Slack version $slackVersion already installed${NC}"
 fi
+
 # nvm
 export NVM_DIR=$HOME/.nvm
 source $NVM_DIR/nvm.sh
@@ -285,7 +287,8 @@ fi
 
 # Node JS
 nvm install stable
-nvm install 10.24.*
+nvm install 14
+nvm install 16
 nvm use stable
 
 # Git
@@ -333,25 +336,25 @@ rm -rf ~/Downloads/downloader
 # All set up message
 echo -e "${GREEN}All set up!${NC}"
 
-# # force stop apt-get
-# echo "Force stop apt-get ..."
-# sudo killall -9 apt-get
+# Update and Upgrade
+echo -e "${BLUE}Updating and Upgrading${NC}"
+sudo apt update && sudo apt upgrade -y
 
-# # reconfigure apt-get
-# dpkg --configure -a
+# ask to reboot
+echo -e "${BLUE}Reboot is required${NC}"
+echo -e "${BLUE}Do you want to reboot now?${NC}"
+select yn in "Y" "y" "N" "n"; do
+    case $yn in
+    [Yy]*)
+        echo -e "${BLUE}Rebooting ...${NC}"
+        sudo reboot
+        break
+        ;;
+    [Nn]*)
+        echo -e "${BLUE}Reboot later ...${NC}"
+        break
+        ;;
+    esac
+done
 
-# # apt-get update
-# echo "apt-get update ..."
-# sudo apt-get update
-
-# # apt upgrade
-# echo "Upgrading apt ..."
-# sudo apt-get -y upgrade
-
-# # apt autoremove
-# echo "Auto removing apt ..."
-# sudo apt-get autoremove 2>/dev/null
-
-# # apt autoclean
-# echo "Auto cleaning apt ..."
-# sudo apt-get autoclean 2>/dev/null
+# End of script
